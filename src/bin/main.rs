@@ -1,3 +1,5 @@
+extern crate weather;
+
 fn main() {
-    println!("Hello, world!");
+    weather::run();
 }
