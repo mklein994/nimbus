@@ -1,5 +1,5 @@
-extern crate weather;
+extern crate nimbus;
 
 fn main() {
-    weather::run();
+    nimbus::run();
 }

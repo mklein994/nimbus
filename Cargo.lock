@@ -1,16 +1,4 @@
 [[package]]
-name = "nimbus"
-version = "0.1.0"
-dependencies = [
- "darksky 0.6.1 (git+https://github.com/zeyla/darksky.rs)",
- "dotenv 0.10.1 (registry+https://github.com/rust-lang/crates.io-index)",
- "reqwest 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "serde 1.0.15 (registry+https://github.com/rust-lang/crates.io-index)",
- "serde_derive 1.0.15 (registry+https://github.com/rust-lang/crates.io-index)",
- "serde_json 1.0.4 (registry+https://github.com/rust-lang/crates.io-index)",
-]
-
-[[package]]
 name = "adler32"
 version = "1.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -480,6 +468,19 @@ dependencies = [
  "libc 0.2.32 (registry+https://github.com/rust-lang/crates.io-index)",
  "winapi 0.2.8 (registry+https://github.com/rust-lang/crates.io-index)",
  "ws2_32-sys 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "nimbus"
+version = "0.1.0"
+dependencies = [
+ "darksky 0.6.1 (git+https://github.com/zeyla/darksky.rs)",
+ "dotenv 0.10.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "reqwest 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "serde 1.0.15 (registry+https://github.com/rust-lang/crates.io-index)",
+ "serde_derive 1.0.15 (registry+https://github.com/rust-lang/crates.io-index)",
+ "serde_json 1.0.4 (registry+https://github.com/rust-lang/crates.io-index)",
+ "weather_icons 0.1.0",
 ]
 
 [[package]]
@@ -968,6 +969,10 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 name = "void"
 version = "1.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "weather_icons"
+version = "0.1.0"
 
 [[package]]
 name = "winapi"
