@@ -1,4 +1,5 @@
 /target/
+/weather_icons/target/
 **/*.rs.bk
 
 # ignore sensitive environment variables, such as private API keys
