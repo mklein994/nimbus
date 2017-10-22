@@ -3,14 +3,50 @@
 
 extern crate darksky;
 extern crate reqwest;
+extern crate serde_json;
+extern crate weather_icons;
 
-use darksky::DarkskyReqwestRequester;
-use reqwest::Client;
+use std::fs::File;
+use std::io::prelude::*;
+use std::error::Error;
 
-pub fn run() {
-    get_weather();
+//use darksky::DarkskyReqwestRequester;
+use darksky::models::Icon;
+use weather_icons::WeatherIcon;
+//use reqwest::Client;
+
+pub fn run() -> Result<(), Box<Error>> {
+    get_weather()
 }
 
-fn get_weather() {
-    println!("Hello…");
+fn get_weather() -> Result<(), Box<Error>> {
+    let mut f = File::open("../darksky-forecast.json")?;
+    let mut contents = String::new();
+    f.read_to_string(&mut contents)?;
+
+    let weather_json: darksky::models::Forecast = serde_json::from_str(&contents)?;
+
+    println!(
+        "{:?}",
+        get_icon(weather_json.currently.unwrap().icon.unwrap())
+    );
+    Ok(())
+}
+
+fn get_icon(icon: Icon) -> WeatherIcon {
+    match icon {
+        Icon::ClearDay => WeatherIcon::DarkskyClearDay,
+        Icon::ClearNight => WeatherIcon::DarkskyClearNight,
+        Icon::Cloudy => WeatherIcon::DarkskyCloudy,
+        Icon::Fog => WeatherIcon::DarkskyFog,
+        Icon::Hail => WeatherIcon::DarkskyHail,
+        Icon::PartlyCloudyDay => WeatherIcon::DarkskyPartlyCloudyDay,
+        Icon::PartlyCloudyNight => WeatherIcon::DarkskyPartlyCloudyNight,
+        Icon::Rain => WeatherIcon::DarkskyRain,
+        Icon::Sleet => WeatherIcon::DarkskySleet,
+        Icon::Snow => WeatherIcon::DarkskySnow,
+        Icon::Thunderstorm => WeatherIcon::DarkskyThunderstorm,
+        Icon::Tornado => WeatherIcon::DarkskyTornado,
+        Icon::Wind => WeatherIcon::DarkskyWind,
+    }
 }

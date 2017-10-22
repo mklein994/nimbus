@@ -1,5 +1,8 @@
 extern crate nimbus;
 
 fn main() {
-    nimbus::run();
+    if let Err(e) = nimbus::run() {
+        eprintln!("Application error: {}", e);
+        std::process::exit(1);
+    }
 }
