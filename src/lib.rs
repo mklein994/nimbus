@@ -13,6 +13,7 @@ use std::error::Error;
 //use darksky::DarkskyReqwestRequester;
 use darksky::models::Icon;
 use weather_icons::WeatherIcon;
+use weather_icons::moon;
 //use reqwest::Client;
 
 pub fn run() -> Result<(), Box<Error>> {
@@ -20,14 +21,20 @@ pub fn run() -> Result<(), Box<Error>> {
 }
 
 fn get_weather() -> Result<(), Box<Error>> {
-    let mut f = File::open("tests/data/forecast.json")?;
+    let mut f = File::open("/home/matthew/projects/weather/tests/data/forecast.json")?;
     let mut contents = String::new();
     f.read_to_string(&mut contents)?;
 
     let weather_json: darksky::models::Forecast = serde_json::from_str(&contents)?;
 
+    print!("<span font_desc='Weather Icons'>");
+    for i in weather_json.daily.unwrap().data.unwrap() {
+        let current_phase = i.moon_phase.unwrap();
+        print!("{}", moon::moon_phase(current_phase));
+    }
+
     println!(
-        "{:?}",
+        " {}</span>",
         get_icon(weather_json.currently.unwrap().icon.unwrap())
     );
     Ok(())

@@ -1,5 +1,7 @@
 use std::fmt;
 
+pub mod moon;
+
 pub enum WeatherIcon {
     DaySunny,
     DayCloudy,
