@@ -13,6 +13,10 @@ serde_derive = "1.0"
 darksky = { git = "https://github.com/zeyla/darksky.rs", branch = "master", features = ["reqwest"] }
 reqwest = "0.8"
 weather_icons = { path = "weather_icons" }
+clippy = { version = "*", optional = true }
+
+[features]
+default = []
 
 [dev-dependencies]
 dotenv = "0"
