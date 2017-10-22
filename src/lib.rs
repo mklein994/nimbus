@@ -20,7 +20,7 @@ pub fn run() -> Result<(), Box<Error>> {
 }
 
 fn get_weather() -> Result<(), Box<Error>> {
-    let mut f = File::open("../darksky-forecast.json")?;
+    let mut f = File::open("tests/data/forecast.json")?;
     let mut contents = String::new();
     f.read_to_string(&mut contents)?;
 
