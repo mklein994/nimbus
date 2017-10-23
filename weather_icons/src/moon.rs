@@ -57,71 +57,10 @@ pub enum Moon {
     MoonAltWaningCrescent4,
     MoonAltWaningCrescent5,
     MoonAltWaningCrescent6,
-    Moon0,
-    Moon1,
-    Moon2,
-    Moon3,
-    Moon4,
-    Moon5,
-    Moon6,
-    Moon7,
-    Moon8,
-    Moon9,
-    Moon10,
-    Moon11,
-    Moon12,
-    Moon13,
-    Moon14,
-    Moon15,
-    Moon16,
-    Moon17,
-    Moon18,
-    Moon19,
-    Moon20,
-    Moon21,
-    Moon22,
-    Moon23,
-    Moon24,
-    Moon25,
-    Moon26,
-    Moon27,
 }
-
 
 impl Moon {
     pub fn icon(&self) -> &'static str {
-        /*
-        const MyMoon: Vec<&str> = vec![
-            "\u{f095}",
-            "\u{f096}",
-            "\u{f097}",
-            "\u{f098}",
-            "\u{f099}",
-            "\u{f09a}",
-            "\u{f09b}",
-            "\u{f09c}",
-            "\u{f09d}",
-            "\u{f09e}",
-            "\u{f09f}",
-            "\u{f0a0}",
-            "\u{f0a1}",
-            "\u{f0a2}",
-            "\u{f0a3}",
-            "\u{f0a4}",
-            "\u{f0a5}",
-            "\u{f0a6}",
-            "\u{f0a7}",
-            "\u{f0a8}",
-            "\u{f0a9}",
-            "\u{f0aa}",
-            "\u{f0ab}",
-            "\u{f0ac}",
-            "\u{f0ad}",
-            "\u{f0ae}",
-            "\u{f0af}",
-            "\u{f0b0}",
-            ];
-            */
         use self::Moon::*;
         match *self {
             MoonNew => "\u{f095}",
@@ -180,34 +119,6 @@ impl Moon {
             MoonAltWaningCrescent4 => "\u{f0e8}",
             MoonAltWaningCrescent5 => "\u{f0e9}",
             MoonAltWaningCrescent6 => "\u{f0ea}",
-            Moon0 => "\u{f095}",
-            Moon1 => "\u{f096}",
-            Moon2 => "\u{f097}",
-            Moon3 => "\u{f098}",
-            Moon4 => "\u{f099}",
-            Moon5 => "\u{f09a}",
-            Moon6 => "\u{f09b}",
-            Moon7 => "\u{f09c}",
-            Moon8 => "\u{f09d}",
-            Moon9 => "\u{f09e}",
-            Moon10 => "\u{f09f}",
-            Moon11 => "\u{f0a0}",
-            Moon12 => "\u{f0a1}",
-            Moon13 => "\u{f0a2}",
-            Moon14 => "\u{f0a3}",
-            Moon15 => "\u{f0a4}",
-            Moon16 => "\u{f0a5}",
-            Moon17 => "\u{f0a6}",
-            Moon18 => "\u{f0a7}",
-            Moon19 => "\u{f0a8}",
-            Moon20 => "\u{f0a9}",
-            Moon21 => "\u{f0aa}",
-            Moon22 => "\u{f0ab}",
-            Moon23 => "\u{f0ac}",
-            Moon24 => "\u{f0ad}",
-            Moon25 => "\u{f0ae}",
-            Moon26 => "\u{f0af}",
-            Moon27 => "\u{f0b0}",
         }
     }
 
@@ -270,71 +181,27 @@ impl Moon {
             MoonAltWaningCrescent4 => "wi-moon-alt-waning-crescent-4",
             MoonAltWaningCrescent5 => "wi-moon-alt-waning-crescent-5",
             MoonAltWaningCrescent6 => "wi-moon-alt-waning-crescent-6",
-            Moon0 => "wi-moon-0",
-            Moon1 => "wi-moon-1",
-            Moon2 => "wi-moon-2",
-            Moon3 => "wi-moon-3",
-            Moon4 => "wi-moon-4",
-            Moon5 => "wi-moon-5",
-            Moon6 => "wi-moon-6",
-            Moon7 => "wi-moon-7",
-            Moon8 => "wi-moon-8",
-            Moon9 => "wi-moon-9",
-            Moon10 => "wi-moon-10",
-            Moon11 => "wi-moon-11",
-            Moon12 => "wi-moon-12",
-            Moon13 => "wi-moon-13",
-            Moon14 => "wi-moon-14",
-            Moon15 => "wi-moon-15",
-            Moon16 => "wi-moon-16",
-            Moon17 => "wi-moon-17",
-            Moon18 => "wi-moon-18",
-            Moon19 => "wi-moon-19",
-            Moon20 => "wi-moon-20",
-            Moon21 => "wi-moon-21",
-            Moon22 => "wi-moon-22",
-            Moon23 => "wi-moon-23",
-            Moon24 => "wi-moon-24",
-            Moon25 => "wi-moon-25",
-            Moon26 => "wi-moon-26",
-            Moon27 => "wi-moon-27",
         }
     }
-
 }
 
-pub fn moon_phase(phase: f64) -> Moon {
-    match (phase * 28f64).round() as u32 {
-        1 => Moon::Moon0,
-        2 => Moon::Moon1,
-        3 => Moon::Moon2,
-        4 => Moon::Moon3,
-        5 => Moon::Moon4,
-        6 => Moon::Moon5,
-        7 => Moon::Moon6,
-        8 => Moon::Moon7,
-        9 => Moon::Moon8,
-        10 => Moon::Moon9,
-        11 => Moon::Moon10,
-        12 => Moon::Moon11,
-        13 => Moon::Moon12,
-        14 => Moon::Moon13,
-        15 => Moon::Moon14,
-        16 => Moon::Moon15,
-        17 => Moon::Moon16,
-        18 => Moon::Moon17,
-        19 => Moon::Moon18,
-        20 => Moon::Moon19,
-        21 => Moon::Moon20,
-        22 => Moon::Moon21,
-        23 => Moon::Moon22,
-        24 => Moon::Moon23,
-        25 => Moon::Moon24,
-        26 => Moon::Moon25,
-        27 => Moon::Moon26,
-        28 => Moon::Moon27,
-        _ => Moon::MoonAltFull,
+pub fn moon_phase(phase: f64) -> char {
+    use std::char;
+    // '\u{f095}', i.e. wi-moon-new
+    let new_moon = 61589u32;
+    // '\u{f0eb}', i.e. wi-moon-alt-new
+    //let new_moon = 61648u32;
+    if phase > 1f64 || phase < 0f64 {
+        panic!("Moon phase out of bounds");
     }
+
+    let lunar_number = match (phase * 28f64).round() as u32 {
+        n @ 0...27 => n,
+        28 => 0,
+        _ => panic!("Moon phase out of bounds"),
+    };
+
+    char::from_u32(new_moon + lunar_number).unwrap()
 }
 
 impl fmt::Display for Moon {
