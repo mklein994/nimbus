@@ -30,7 +30,7 @@ fn get_weather() -> Result<(), Box<Error>> {
     print!("<span font_desc='Weather Icons'>");
     for i in weather_json.daily.unwrap().data.unwrap() {
         let current_phase = i.moon_phase.unwrap();
-        print!("{}", moon::moon_phase(current_phase));
+        print!("{}", moon::phase(current_phase));
     }
 
     println!(

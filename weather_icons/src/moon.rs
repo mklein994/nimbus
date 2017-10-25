@@ -185,7 +185,7 @@ impl Moon {
     }
 }
 
-pub fn moon_phase(phase: f64) -> char {
+pub fn phase(phase: f64) -> char {
     use std::char;
     // '\u{f095}', i.e. wi-moon-new
     let new_moon = 61589u32;
