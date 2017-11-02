@@ -2,6 +2,9 @@
 #![cfg_attr(feature = "clippy", plugin(clippy))]
 
 extern crate darksky;
+#[macro_use]
+extern crate log;
+extern crate pretty_env_logger;
 extern crate reqwest;
 extern crate serde_json;
 extern crate weather_icons;
@@ -11,34 +14,152 @@ use std::io::prelude::*;
 use std::error::Error;
 
 //use darksky::DarkskyReqwestRequester;
-use darksky::models::Icon;
+use darksky::models::{Datablock, Datapoint, Icon};
 use weather_icons::WeatherIcon;
 use weather_icons::moon;
 //use reqwest::Client;
+use std::fmt;
+use std::convert::From;
 
-pub fn run() -> Result<(), Box<Error>> {
-    get_weather()
+
+#[derive(Debug)]
+struct CurrentWeather {
+    icon: WeatherIcon,
+    summary: String,
+    temperature: f64,
+    pressure: f64,
 }
 
-fn get_weather() -> Result<(), Box<Error>> {
+impl From<Datapoint> for CurrentWeather {
+    fn from(datapoint: Datapoint) -> Self {
+        CurrentWeather {
+            icon: get_icon(datapoint.icon.expect("current icon missing")),
+            summary: datapoint.summary.expect("current summary missing"),
+            temperature: datapoint.temperature.expect("current temperature missing"),
+            pressure: datapoint.pressure.expect("current pressure missing"),
+        }
+    }
+}
+
+impl fmt::Display for CurrentWeather {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            f,
+            "{icon} {temperature}{unit} {summary}",
+            icon = self.icon,
+            temperature = self.temperature,
+            unit = format!("°{}", "C"), // FIXME: use the unit passed to darksky::Options
+            summary = self.summary
+        )
+    }
+}
+
+impl Default for CurrentWeather {
+    fn default() -> CurrentWeather {
+        CurrentWeather {
+            icon: WeatherIcon::Na,
+            temperature: 0.0,
+            pressure: 0.0,
+            summary: String::from("Weather not available"),
+        }
+    }
+}
+
+#[derive(Debug)]
+struct DailyWeather {
+    icon: WeatherIcon,
+    summary: String,
+}
+
+impl fmt::Display for DailyWeather {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            f,
+            "{icon} {summary}",
+            icon = self.icon,
+            summary = self.summary
+        )
+    }
+}
+
+impl From<Datablock> for DailyWeather {
+    fn from(datablock: Datablock) -> Self {
+        DailyWeather {
+            icon: get_icon(datablock.icon.expect("daily icon missing")),
+            summary: datablock.summary.expect("daily summary missing"),
+        }
+    }
+}
+
+pub fn run() -> Result<(), Box<Error>> {
+    let weather = get_weather().unwrap_or_else(|e| {
+        panic!("Error getting weather: {:?}", e);
+    });
+
+    info!("{:?}", weather.flags.unwrap().units.unwrap());
+
+    //debug!("{:?}", weather);
+
+    let current_json = weather.currently.unwrap_or_else(|| {
+        panic!("Error getting current weather");
+    });
+
+    let current = CurrentWeather::from(current_json);
+    debug!("current: {:#?}", current);
+    info!("current: {}", current);
+
+    let daily_json = weather.daily.unwrap_or_else(|| {
+        panic!("daily weather missing");
+    });
+
+    let daily = DailyWeather::from(daily_json);
+    debug!("daily: {:#?}", daily);
+    info!("daily: {}", daily);
+
+    Ok(())
+}
+
+fn get_weather() -> Result<darksky::models::Forecast, Box<Error>> {
     let mut f = File::open("/home/matthew/projects/weather/tests/data/forecast.json")?;
     let mut contents = String::new();
     f.read_to_string(&mut contents)?;
 
     let weather_json: darksky::models::Forecast = serde_json::from_str(&contents)?;
 
-    print!("<span font_desc='Weather Icons'>");
-    for i in weather_json.daily.unwrap().data.unwrap() {
-        let current_phase = i.moon_phase.unwrap();
-        print!("{}", moon::phase(current_phase));
-    }
-
-    println!(
-        " {}</span>",
-        get_icon(weather_json.currently.unwrap().icon.unwrap())
-    );
-    Ok(())
+    Ok(weather_json)
 }
+
+/*
+fn current_weather(weather: &darksky::models::Forecast) -> Result<CurrentWeather, Box<Error>> {
+    let currently = weather.currently.unwrap();
+    debug!("currently: {:#?}", currently);
+
+    let summary = currently.summary.expect("currently: summary missing");
+    info!("currently.summary: {}", summary);
+
+    let icon = get_icon(currently.icon.expect("currently: icon missing"));
+    info!("currently.icon: {}", icon);
+    debug!("currently.icon: {:?}", icon);
+
+    let temperature = currently
+        .temperature
+        .expect("currently: temperature missing");
+    info!("currently.temperature: {}", temperature);
+
+    let pressure = currently.pressure.expect("currently: missing pressure");
+    info!("currently.pressure: {}", pressure);
+
+    let unit = weather.flags.unwrap().units.unwrap();
+
+    Ok(CurrentWeather {
+        icon,
+        summary,
+        temperature,
+        pressure,
+        unit,
+    })
+}
+*/
 
 fn get_icon(icon: Icon) -> WeatherIcon {
     match icon {
