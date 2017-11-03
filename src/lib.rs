@@ -1,5 +1,6 @@
 #![cfg_attr(feature = "clippy", feature(plugin))]
 #![cfg_attr(feature = "clippy", plugin(clippy))]
+#![warn(clippy_pedantic)]
 
 extern crate darksky;
 #[macro_use]
@@ -45,7 +46,7 @@ struct CurrentWeather {
 
 impl From<Datapoint> for CurrentWeather {
     fn from(datapoint: Datapoint) -> Self {
-        CurrentWeather {
+        Self {
             icon: get_icon(datapoint.icon.expect("current icon missing")),
             summary: datapoint.summary.expect("current summary missing"),
             temperature: datapoint.temperature.expect("current temperature missing"),
@@ -61,15 +62,15 @@ impl fmt::Display for CurrentWeather {
             "{icon} {temperature}{unit} {summary}",
             icon = self.icon,
             temperature = self.temperature,
-            unit = format!("°{}", "C"), // FIXME: use the unit passed to darksky::Options
+            unit = format!("\u{00b0}{}", "C"), // FIXME: use the unit passed to darksky::Options
             summary = self.summary
         )
     }
 }
 
 impl Default for CurrentWeather {
-    fn default() -> CurrentWeather {
-        CurrentWeather {
+    fn default() -> Self {
+        Self {
             icon: WeatherIcon::Na,
             temperature: 0.0,
             pressure: 0.0,
@@ -97,7 +98,7 @@ impl fmt::Display for DailyWeather {
 
 impl From<Datablock> for DailyWeather {
     fn from(datablock: Datablock) -> Self {
-        DailyWeather {
+        Self {
             icon: get_icon(datablock.icon.expect("daily icon missing")),
             summary: datablock.summary.expect("daily summary missing"),
         }
@@ -109,7 +110,14 @@ pub fn run(config: Config) -> Result<(), Box<Error>> {
         panic!("Error getting weather: {:?}", e);
     });
 
-    info!("{:?}", weather.flags.unwrap().units.unwrap());
+    info!(
+        "{:?}",
+        weather
+            .flags
+            .expect("Missing weather flags")
+            .units
+            .expect("Error getting flag units")
+    );
 
     //debug!("{:?}", weather);
 
