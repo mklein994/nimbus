@@ -7,17 +7,17 @@ license = "MIT"
 authors = ["Matthew Klein <mklein994@gmail.com>"]
 
 [dependencies]
-serde = "1.0"
-serde_json = "1.0"
-serde_derive = "1.0"
-darksky = { git = "https://github.com/zeyla/darksky.rs", branch = "master", features = ["reqwest"] }
-reqwest = "0.8"
-weather_icons = { path = "weather_icons" }
 clippy = { version = "*", optional = true }
-pretty_env_logger = "0.1"
-log = "0.3"
+darksky = { git = "https://github.com/zeyla/darksky.rs", branch = "master", features = ["reqwest"] }
 dotenv = "0"
+log = "0.3"
+pretty_env_logger = "0.1"
+reqwest = "0.8"
+serde = "1.0"
+serde_derive = "1.0"
+serde_json = "1.0"
 toml = "0.4"
+weather_icons = { path = "weather_icons" }
 
 [features]
 default = []
