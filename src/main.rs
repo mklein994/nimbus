@@ -3,45 +3,14 @@ extern crate dotenv;
 #[macro_use]
 extern crate log;
 extern crate pretty_env_logger;
-#[macro_use]
-extern crate serde_derive;
 extern crate toml;
 extern crate nimbus;
 
-use std::io::prelude::*;
-use std::fs::File;
-use std::path::Path;
-
 use std::env;
-use toml::Value;
-
-#[derive(Debug, Deserialize)]
-struct Config {
-    coordinates: Coordinates,
-    token: String,
-    language: Option<darksky::Language>,
-    unit: Option<darksky::Unit>,
-}
-
-impl<'a> Config {
-    fn new() -> Config {
-        Config {
-            coordinates: Coordinates {
-                latitude: 49.9,
-                longitude: -97.0,
-            },
-            token: "".to_string(),
-            language: Some(darksky::Language::En),
-            unit: Some(darksky::Unit::Ca),
-        }
-    }
-}
-
-#[derive(Debug, Deserialize)]
-struct Coordinates {
-    latitude: f64,
-    longitude: f64,
-}
+use std::fs::File;
+use std::io::prelude::*;
+use std::path::Path;
+use nimbus::{Config, Coordinates};
 
 fn read_config() -> Result<Config, Box<std::error::Error>> {
     let path = Path::new(&env::var("HOME").unwrap())
@@ -84,7 +53,13 @@ fn main() {
             longitude: longitude,
         };
 
-        let config = Config::new();
+        let config = Config {
+            coordinates,
+            token,
+            language: Some("en".to_string()),
+            unit: Some("ca".to_string()),
+        };
+
         info!("{:#?}", config);
         config
     } else {
@@ -92,7 +67,7 @@ fn main() {
     };
 
 
-    if let Err(e) = nimbus::run() {
+    if let Err(e) = nimbus::run(config) {
         eprintln!("Application error: {}", e);
         std::process::exit(1);
     }

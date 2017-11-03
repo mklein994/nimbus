@@ -6,21 +6,34 @@ extern crate darksky;
 extern crate log;
 extern crate pretty_env_logger;
 extern crate reqwest;
+#[macro_use]
+extern crate serde_derive;
 extern crate serde_json;
 extern crate weather_icons;
 
+use darksky::models::{Datablock, Datapoint, Icon};
+use std::convert::From;
+use std::error::Error;
+use std::fmt;
 use std::fs::File;
 use std::io::prelude::*;
-use std::error::Error;
-
-//use darksky::DarkskyReqwestRequester;
-use darksky::models::{Datablock, Datapoint, Icon};
 use weather_icons::WeatherIcon;
-use weather_icons::moon;
-//use reqwest::Client;
-use std::fmt;
-use std::convert::From;
 
+#[derive(Debug, Deserialize)]
+pub struct Config {
+    pub coordinates: Coordinates,
+    pub token: String,
+    /// darksky::Language
+    pub language: Option<String>,
+    /// darksky::Unit
+    pub unit: Option<String>,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct Coordinates {
+    pub latitude: f64,
+    pub longitude: f64,
+}
 
 #[derive(Debug)]
 struct CurrentWeather {
@@ -91,7 +104,7 @@ impl From<Datablock> for DailyWeather {
     }
 }
 
-pub fn run() -> Result<(), Box<Error>> {
+pub fn run(config: Config) -> Result<(), Box<Error>> {
     let weather = get_weather().unwrap_or_else(|e| {
         panic!("Error getting weather: {:?}", e);
     });
