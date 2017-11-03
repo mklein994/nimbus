@@ -1,0 +1,15 @@
+#image: rust
+image: rustlang/rust:nightly
+
+cache:
+  paths:
+    - target/
+    - cargo/
+
+cargo:
+  script:
+    - cargo build --verbose --all
+    - cargo test --verbose --all
+
+variables:
+  CARGO_HOME: $CI_PROJECT_DIR/cargo
