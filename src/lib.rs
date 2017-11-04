@@ -146,38 +146,6 @@ fn get_weather() -> Result<darksky::models::Forecast, Box<Error>> {
     Ok(weather_json)
 }
 
-/*
-fn current_weather(weather: &darksky::models::Forecast) -> Result<CurrentWeather, Box<Error>> {
-    let currently = weather.currently.unwrap();
-    debug!("currently: {:#?}", currently);
-
-    let summary = currently.summary.expect("currently: summary missing");
-    info!("currently.summary: {}", summary);
-
-    let icon = get_icon(currently.icon.expect("currently: icon missing"));
-    info!("currently.icon: {}", icon);
-    debug!("currently.icon: {:?}", icon);
-
-    let temperature = currently
-        .temperature
-        .expect("currently: temperature missing");
-    info!("currently.temperature: {}", temperature);
-
-    let pressure = currently.pressure.expect("currently: missing pressure");
-    info!("currently.pressure: {}", pressure);
-
-    let unit = weather.flags.unwrap().units.unwrap();
-
-    Ok(CurrentWeather {
-        icon,
-        summary,
-        temperature,
-        pressure,
-        unit,
-    })
-}
-*/
-
 fn get_icon(icon: Icon) -> WeatherIcon {
     match icon {
         Icon::ClearDay => WeatherIcon::DarkskyClearDay,
