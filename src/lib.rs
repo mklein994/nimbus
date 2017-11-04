@@ -141,7 +141,7 @@ pub fn run(config: Config) -> Result<(), Box<Error>> {
 }
 
 fn get_weather() -> Result<darksky::models::Forecast, Box<Error>> {
-    let mut f = File::open("/home/matthew/projects/weather/tests/data/forecast.json")?;
+    let mut f = File::open("/home/matthew/projects/weather/tests/data/forecast_2.json")?;
     let mut contents = String::new();
     f.read_to_string(&mut contents)?;
 
