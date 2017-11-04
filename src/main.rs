@@ -44,6 +44,8 @@ fn main() {
     info!("Retrieving settings\u{2026}");
 
     let config: Config = if dotenv::from_filename(".secret").is_ok() {
+        info!("Settings from dotenv");
+
         let token = env::var("DARKSKY_KEY").expect(
             "Missing DARKSKY_KEY. Please set the DARKSKY_KEY environment variable to your API key",
         );
@@ -73,6 +75,7 @@ fn main() {
         info!("{:#?}", config);
         config
     } else {
+        info!("Settings from config");
         read_config().expect("Couldn't read config")
     };
 
