@@ -121,17 +121,13 @@ pub fn run(config: Config) -> Result<(), Box<Error>> {
 
     //debug!("{:?}", weather);
 
-    let current_json = weather.currently.unwrap_or_else(|| {
-        panic!("Error getting current weather");
-    });
+    let current_json = weather.currently.expect("Error getting current weather");
 
     let current = CurrentWeather::from(current_json);
     debug!("current: {:#?}", current);
     info!("current: {}", current);
 
-    let daily_json = weather.daily.unwrap_or_else(|| {
-        panic!("daily weather missing");
-    });
+    let daily_json = weather.daily.expect("daily weather missing");
 
     let daily = DailyWeather::from(daily_json);
     debug!("daily: {:#?}", daily);
