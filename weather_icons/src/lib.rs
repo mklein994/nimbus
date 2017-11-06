@@ -2,7 +2,7 @@ use std::fmt;
 
 pub mod moon;
 
-pub enum WeatherIcon {
+pub enum Icon {
     DaySunny,
     DayCloudy,
     DayCloudyGusts,
@@ -603,9 +603,9 @@ pub enum WeatherIcon {
     WuUnknown,
 }
 
-impl WeatherIcon {
+impl Icon {
     fn icon(&self) -> &'static str {
-        use WeatherIcon::*;
+        use Icon::*;
         match *self {
             DaySunny => "\u{f00d}",
             DayCloudy => "\u{f002}",
@@ -1209,7 +1209,7 @@ impl WeatherIcon {
     }
 
     fn description(&self) -> &'static str {
-        use WeatherIcon::*;
+        use Icon::*;
         match *self {
             DaySunny => "wi-day-sunny",
             DayCloudy => "wi-day-cloudy",
@@ -1813,13 +1813,13 @@ impl WeatherIcon {
     }
 }
 
-impl fmt::Display for WeatherIcon {
+impl fmt::Display for Icon {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "{}", self.icon())
     }
 }
 
-impl fmt::Debug for WeatherIcon {
+impl fmt::Debug for Icon {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "{}: {:?}", self.description(), self.icon())
     }

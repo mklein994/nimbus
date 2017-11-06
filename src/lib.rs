@@ -12,13 +12,14 @@ extern crate serde_derive;
 extern crate serde_json;
 extern crate weather_icons;
 
-use darksky::models::{Datablock, Datapoint, Icon};
+use darksky::models::{Datablock, Datapoint};
+use darksky::models::Icon as DarkskyIcon;
 use std::convert::From;
 use std::error::Error;
 use std::fmt;
 use std::fs::File;
 use std::io::prelude::*;
-use weather_icons::WeatherIcon;
+use weather_icons::Icon;
 
 #[derive(Debug, Deserialize)]
 pub struct Config {
@@ -37,14 +38,14 @@ pub struct Coordinates {
 }
 
 #[derive(Debug)]
-struct CurrentWeather {
-    icon: WeatherIcon,
+struct Currently {
+    icon: Icon,
     summary: String,
     temperature: f64,
     pressure: f64,
 }
 
-impl From<Datapoint> for CurrentWeather {
+impl From<Datapoint> for Currently {
     fn from(datapoint: Datapoint) -> Self {
         Self {
             icon: get_icon(datapoint.icon.expect("current icon missing")),
@@ -55,7 +56,7 @@ impl From<Datapoint> for CurrentWeather {
     }
 }
 
-impl fmt::Display for CurrentWeather {
+impl fmt::Display for Currently {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(
             f,
@@ -68,10 +69,10 @@ impl fmt::Display for CurrentWeather {
     }
 }
 
-impl Default for CurrentWeather {
+impl Default for Currently {
     fn default() -> Self {
         Self {
-            icon: WeatherIcon::Na,
+            icon: Icon::Na,
             temperature: 0.0,
             pressure: 0.0,
             summary: String::from("Weather not available"),
@@ -80,12 +81,12 @@ impl Default for CurrentWeather {
 }
 
 #[derive(Debug)]
-struct DailyWeather {
-    icon: WeatherIcon,
+struct Daily {
+    icon: Icon,
     summary: String,
 }
 
-impl fmt::Display for DailyWeather {
+impl fmt::Display for Daily {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(
             f,
@@ -96,7 +97,7 @@ impl fmt::Display for DailyWeather {
     }
 }
 
-impl From<Datablock> for DailyWeather {
+impl From<Datablock> for Daily {
     fn from(datablock: Datablock) -> Self {
         Self {
             icon: get_icon(datablock.icon.expect("daily icon missing")),
@@ -123,13 +124,13 @@ pub fn run(config: Config) -> Result<(), Box<Error>> {
 
     let current_json = weather.currently.expect("Error getting current weather");
 
-    let current = CurrentWeather::from(current_json);
+    let current = Currently::from(current_json);
     debug!("current: {:#?}", current);
     info!("current: {}", current);
 
     let daily_json = weather.daily.expect("daily weather missing");
 
-    let daily = DailyWeather::from(daily_json);
+    let daily = Daily::from(daily_json);
     debug!("daily: {:#?}", daily);
     info!("daily: {}", daily);
 
@@ -146,20 +147,20 @@ fn get_weather() -> Result<darksky::models::Forecast, Box<Error>> {
     Ok(weather_json)
 }
 
-fn get_icon(icon: Icon) -> WeatherIcon {
+fn get_icon(icon: DarkskyIcon) -> Icon {
     match icon {
-        Icon::ClearDay => WeatherIcon::DarkskyClearDay,
-        Icon::ClearNight => WeatherIcon::DarkskyClearNight,
-        Icon::Cloudy => WeatherIcon::DarkskyCloudy,
-        Icon::Fog => WeatherIcon::DarkskyFog,
-        Icon::Hail => WeatherIcon::DarkskyHail,
-        Icon::PartlyCloudyDay => WeatherIcon::DarkskyPartlyCloudyDay,
-        Icon::PartlyCloudyNight => WeatherIcon::DarkskyPartlyCloudyNight,
-        Icon::Rain => WeatherIcon::DarkskyRain,
-        Icon::Sleet => WeatherIcon::DarkskySleet,
-        Icon::Snow => WeatherIcon::DarkskySnow,
-        Icon::Thunderstorm => WeatherIcon::DarkskyThunderstorm,
-        Icon::Tornado => WeatherIcon::DarkskyTornado,
-        Icon::Wind => WeatherIcon::DarkskyWind,
+        DarkskyIcon::ClearDay => Icon::DarkskyClearDay,
+        DarkskyIcon::ClearNight => Icon::DarkskyClearNight,
+        DarkskyIcon::Cloudy => Icon::DarkskyCloudy,
+        DarkskyIcon::Fog => Icon::DarkskyFog,
+        DarkskyIcon::Hail => Icon::DarkskyHail,
+        DarkskyIcon::PartlyCloudyDay => Icon::DarkskyPartlyCloudyDay,
+        DarkskyIcon::PartlyCloudyNight => Icon::DarkskyPartlyCloudyNight,
+        DarkskyIcon::Rain => Icon::DarkskyRain,
+        DarkskyIcon::Sleet => Icon::DarkskySleet,
+        DarkskyIcon::Snow => Icon::DarkskySnow,
+        DarkskyIcon::Thunderstorm => Icon::DarkskyThunderstorm,
+        DarkskyIcon::Tornado => Icon::DarkskyTornado,
+        DarkskyIcon::Wind => Icon::DarkskyWind,
     }
 }
