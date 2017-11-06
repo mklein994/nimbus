@@ -1,0 +1,13 @@
+\u{f0b7}	wi_wind_beaufort_0
+\u{f0b8}	wi_wind_beaufort_1
+\u{f0b9}	wi_wind_beaufort_2
+\u{f0ba}	wi_wind_beaufort_3
+\u{f0bb}	wi_wind_beaufort_4
+\u{f0bc}	wi_wind_beaufort_5
+\u{f0bd}	wi_wind_beaufort_6
+\u{f0be}	wi_wind_beaufort_7
+\u{f0bf}	wi_wind_beaufort_8
+\u{f0c0}	wi_wind_beaufort_9
+\u{f0c1}	wi_wind_beaufort_10
+\u{f0c2}	wi_wind_beaufort_11
+\u{f0c3}	wi_wind_beaufort_12

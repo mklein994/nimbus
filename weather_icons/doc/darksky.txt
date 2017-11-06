@@ -1,0 +1,13 @@
+\u{f002}	wi_darksky_partly_cloudy_day
+\u{f00d}	wi_darksky_clear_day
+\u{f013}	wi_darksky_cloudy
+\u{f014}	wi_darksky_fog
+\u{f015}	wi_darksky_hail
+\u{f019}	wi_darksky_rain
+\u{f01b}	wi_darksky_snow
+\u{f01e}	wi_darksky_thunderstorm
+\u{f02e}	wi_darksky_clear_night
+\u{f031}	wi_darksky_partly_cloudy_night
+\u{f050}	wi_darksky_wind
+\u{f056}	wi_darksky_tornado
+\u{f0b5}	wi_darksky_sleet

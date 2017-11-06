@@ -1,0 +1,12 @@
+\u{f089}	wi_time_12
+\u{f08a}	wi_time_1
+\u{f08b}	wi_time_2
+\u{f08c}	wi_time_3
+\u{f08d}	wi_time_4
+\u{f08e}	wi_time_5
+\u{f08f}	wi_time_6
+\u{f090}	wi_time_7
+\u{f091}	wi_time_8
+\u{f092}	wi_time_9
+\u{f093}	wi_time_10
+\u{f094}	wi_time_11
