@@ -1,4 +1,4 @@
-#![warn(clippy_pedantic)]
+#![cfg_attr(any(feature = "clippy", feature = "cargo-clippy"), warn(clippy_pedantic))]
 
 extern crate darksky;
 extern crate dotenv;

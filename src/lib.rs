@@ -1,6 +1,6 @@
-#![cfg_attr(feature = "clippy", feature(plugin))]
-#![cfg_attr(feature = "clippy", plugin(clippy))]
-#![warn(clippy_pedantic)]
+#![cfg_attr(any(feature = "clippy", feature = "cargo-clippy"), feature(plugin))]
+#![cfg_attr(any(feature = "clippy", feature = "cargo-clippy"), plugin(clippy))]
+#![cfg_attr(any(feature = "clippy", feature = "cargo-clippy"), warn(clippy_pedantic))]
 
 extern crate darksky;
 #[macro_use]
