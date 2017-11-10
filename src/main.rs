@@ -43,7 +43,7 @@ fn main() {
 
     info!("Retrieving settings\u{2026}");
 
-    let config: Config = if dotenv::from_filename(".secret").is_ok() {
+    let config: Config = if dotenv::dotenv().is_ok() {
         info!("Settings from dotenv");
 
         let token = env::var("DARKSKY_KEY").expect(

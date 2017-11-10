@@ -3,4 +3,4 @@
 **/*.rs.bk
 
 # ignore sensitive environment variables, such as private API keys
-.secret
+.env
