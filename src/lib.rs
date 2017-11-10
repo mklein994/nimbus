@@ -60,10 +60,9 @@ impl fmt::Display for Currently {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(
             f,
-            "{icon} {temperature}{unit} {summary}",
+            "{icon} {temperature}\u{00b0} {summary}",
             icon = self.icon,
             temperature = self.temperature,
-            unit = format!("\u{00b0}{}", "C"), // FIXME: use the unit passed to darksky::Options
             summary = self.summary
         )
     }
