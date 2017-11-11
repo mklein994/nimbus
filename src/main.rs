@@ -72,7 +72,7 @@ fn main() {
             unit: Some("ca".to_string()),
         };
 
-        info!("{:#?}", config);
+        debug!("{:#?}", config);
         config
     } else {
         info!("Settings from config");

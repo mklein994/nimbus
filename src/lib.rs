@@ -110,17 +110,6 @@ pub fn run(config: Config) -> Result<(), Box<Error>> {
         panic!("Error getting weather: {:?}", e);
     });
 
-    info!(
-        "{:?}",
-        weather
-            .flags
-            .expect("Missing weather flags")
-            .units
-            .expect("Error getting flag units")
-    );
-
-    //debug!("{:?}", weather);
-
     let current_json = weather.currently.expect("Error getting current weather");
 
     let current = Currently::from(current_json);
