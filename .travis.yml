@@ -1,7 +1,11 @@
 language: rust
 rust: nightly
 cache: cargo
+before_script:
+  - export PATH="$PATH:/$HOME/.cargo/bin"
+  - cargo +nightly install --force rustfmt-nightly
 script:
+  - cargo +nightly fmt -- --write-mode=diff
   - cargo build --verbose --all
   - cargo test --verbose --all
 notifications:
