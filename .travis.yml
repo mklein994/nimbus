@@ -11,4 +11,4 @@ script:
   - cargo build --verbose --all
   - cargo test --verbose --all
 notifications:
-        email: false
+  email: false
