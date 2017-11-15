@@ -22,21 +22,9 @@ use std::io::prelude::*;
 use std::path::Path;
 use weather_icons::Icon;
 
-#[derive(Debug, Deserialize)]
-pub struct Config {
-    pub coordinates: Coordinates,
-    pub token: String,
-    /// darksky::Language
-    pub language: Option<String>,
-    /// darksky::Unit
-    pub unit: Option<String>,
-}
+mod config;
 
-#[derive(Debug, Deserialize)]
-pub struct Coordinates {
-    pub latitude: f64,
-    pub longitude: f64,
-}
+pub use config::*;
 
 #[derive(Debug)]
 struct Currently {
