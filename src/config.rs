@@ -11,58 +11,58 @@ use std::io;
 use std::io::prelude::*;
 use std::path::{Path, PathBuf};
 
-type Result<T> = ::std::result::Result<T, ConfigError>;
+type Result<T> = ::std::result::Result<T, Error>;
 
 #[derive(Debug)]
-pub enum ConfigError {
+pub enum Error {
     Io(io::Error),
     Xdg(xdg::BaseDirectoriesError),
     Toml(toml::de::Error),
 }
 
-impl fmt::Display for ConfigError {
+impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
-            ConfigError::Io(ref err) => write!(f, "IO error: {}", err),
-            ConfigError::Xdg(ref err) => write!(f, "Xdg error: {}", err),
-            ConfigError::Toml(ref err) => write!(f, "Toml error: {}", err),
+            Error::Io(ref err) => write!(f, "IO error: {}", err),
+            Error::Xdg(ref err) => write!(f, "Xdg error: {}", err),
+            Error::Toml(ref err) => write!(f, "Toml error: {}", err),
         }
     }
 }
 
-impl error::Error for ConfigError {
+impl error::Error for Error {
     fn description(&self) -> &str {
         match *self {
-            ConfigError::Io(ref err) => err.description(),
-            ConfigError::Xdg(ref err) => err.description(),
-            ConfigError::Toml(ref err) => err.description(),
+            Error::Io(ref err) => err.description(),
+            Error::Xdg(ref err) => err.description(),
+            Error::Toml(ref err) => err.description(),
         }
     }
 
     fn cause(&self) -> Option<&error::Error> {
         match *self {
-            ConfigError::Io(ref err) => Some(err),
-            ConfigError::Xdg(ref err) => Some(err),
-            ConfigError::Toml(ref err) => Some(err),
+            Error::Io(ref err) => Some(err),
+            Error::Xdg(ref err) => Some(err),
+            Error::Toml(ref err) => Some(err),
         }
     }
 }
 
-impl From<io::Error> for ConfigError {
-    fn from(err: io::Error) -> ConfigError {
-        ConfigError::Io(err)
+impl From<io::Error> for Error {
+    fn from(err: io::Error) -> Self {
+        Error::Io(err)
     }
 }
 
-impl From<xdg::BaseDirectoriesError> for ConfigError {
-    fn from(err: xdg::BaseDirectoriesError) -> ConfigError {
-        ConfigError::Xdg(err)
+impl From<xdg::BaseDirectoriesError> for Error {
+    fn from(err: xdg::BaseDirectoriesError) -> Self {
+        Error::Xdg(err)
     }
 }
 
-impl From<toml::de::Error> for ConfigError {
-    fn from(err: toml::de::Error) -> ConfigError {
-        ConfigError::Toml(err)
+impl From<toml::de::Error> for Error {
+    fn from(err: toml::de::Error) -> Self {
+        Error::Toml(err)
     }
 }
 
@@ -91,7 +91,7 @@ impl Config {
 
         info!("{:?}", config.display());
 
-        let mut f = File::open(config).map_err(ConfigError::Io)?; //.expect("config not found");
+        let mut f = File::open(config).map_err(Error::Io)?; //.expect("config not found");
         info!("{:?}", f);
 
         let mut contents = String::new();
