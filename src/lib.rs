@@ -5,26 +5,17 @@
 extern crate darksky;
 #[macro_use]
 extern crate log;
-extern crate pretty_env_logger;
-extern crate reqwest;
-#[macro_use]
-extern crate serde_derive;
 extern crate serde_json;
 extern crate weather_icons;
 
 use darksky::models::{Datablock, Datapoint};
 use darksky::models::Icon as DarkskyIcon;
-use std::convert::From;
 use std::error::Error;
 use std::fmt;
 use std::fs::File;
 use std::io::prelude::*;
 use std::path::Path;
 use weather_icons::Icon;
-
-mod config;
-
-pub use config::*;
 
 #[derive(Debug)]
 struct Currently {
@@ -92,26 +83,6 @@ impl From<Datablock> for Daily {
             summary: datablock.summary.expect("daily summary missing"),
         }
     }
-}
-
-pub fn run(config: Config) -> Result<(), Box<Error>> {
-    let weather = get_weather().unwrap_or_else(|e| {
-        panic!("Error getting weather: {:?}", e);
-    });
-
-    let current_json = weather.currently.expect("Error getting current weather");
-
-    let current = Currently::from(current_json);
-    debug!("current: {:#?}", current);
-    info!("current: {}", current);
-
-    let daily_json = weather.daily.expect("daily weather missing");
-
-    let daily = Daily::from(daily_json);
-    debug!("daily: {:#?}", daily);
-    info!("daily: {}", daily);
-
-    Ok(())
 }
 
 fn get_weather() -> Result<darksky::models::Forecast, Box<Error>> {
