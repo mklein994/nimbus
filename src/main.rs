@@ -1,4 +1,7 @@
-#![cfg_attr(any(feature = "clippy", feature = "cargo-clippy"), warn(clippy_pedantic))]
+#![cfg_attr(feature = "clippy", feature(plugin))]
+#![cfg_attr(feature = "clippy", plugin(clippy))]
+#![cfg_attr(feature = "clippy", warn(clippy_pedantic))]
+#![cfg_attr(feature = "clippy", allow(missing_docs_in_private_items))]
 
 extern crate darksky;
 extern crate dotenv;

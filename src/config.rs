@@ -1,3 +1,6 @@
+#![cfg_attr(feature = "clippy", warn(clippy_pedantic))]
+#![cfg_attr(feature = "clippy", allow(missing_docs_in_private_items))]
+
 extern crate toml;
 extern crate xdg;
 
