@@ -86,7 +86,8 @@ impl Config {
     pub fn load() -> Result<Self> {
         let config = match config_path() {
             Some(c) => c,
-            None => panic!("Config error"),
+            // TODO: set some defaults instead of panicking
+            None => panic!("Configuration not found"),
         };
 
         info!("{:?}", config.display());
@@ -108,6 +109,6 @@ impl Config {
 
 fn config_path() -> Option<PathBuf> {
     xdg::BaseDirectories::with_prefix(env!("CARGO_PKG_NAME"))
-        .expect("Can't find ~/.config/weather/")
+        .expect("Error finding xdg base directories")
         .find_config_file(Path::new("config.toml"))
 }
