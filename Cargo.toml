@@ -19,6 +19,7 @@ serde_derive = "1.0"
 serde_json = "1.0"
 toml = "0.4"
 xdg = "2.1.0"
+weather_icons = "0.1"
 
 [dependencies.clippy]
 optional = true
@@ -28,9 +29,6 @@ version = "*"
 branch = "master"
 features = ["reqwest"]
 git = "https://github.com/zeyla/darksky.rs"
-
-[dependencies.weather_icons]
-path = "../weather_icons"
 
 [build-dependencies]
 clap = "2.27.1"
