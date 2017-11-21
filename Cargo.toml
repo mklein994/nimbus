@@ -1,6 +1,9 @@
 [package]
-name = "weather"
+name = "nimbus"
 version = "0.1.0"
+description = "Cli tool to get the weather forecast"
+documentation = "https://docs.rs/nimbus"
+license = "MIT"
 authors = ["Matthew Klein <mklein994@gmail.com>"]
 
 [dependencies]
