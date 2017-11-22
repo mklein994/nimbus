@@ -1,4 +1,4 @@
-extern crate weather;
+extern crate nimbus;
 
 mod common;
 
