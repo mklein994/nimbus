@@ -1,8 +1,0 @@
-\u{f043}	wi_direction_down_left
-\u{f044}	wi_direction_down
-\u{f048}	wi_direction_left
-\u{f04d}	wi_direction_right
-\u{f057}	wi_direction_up_right
-\u{f058}	wi_direction_up
-\u{f087}	wi_direction_up_left
-\u{f088}	wi_direction_down_right

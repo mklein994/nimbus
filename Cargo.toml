@@ -30,7 +30,7 @@ features = ["reqwest"]
 git = "https://github.com/zeyla/darksky.rs"
 
 [dependencies.weather_icons]
-path = "weather_icons"
+path = "../weather_icons"
 
 [build-dependencies]
 clap = "2.27.1"
