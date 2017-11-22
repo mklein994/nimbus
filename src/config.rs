@@ -27,10 +27,7 @@ impl fmt::Display for Error {
             Error::Io(ref err) => err.fmt(f),
             Error::Xdg(ref err) => err.fmt(f),
             Error::Toml(ref err) => err.fmt(f),
-            Error::NotFound => write!(
-                f,
-                "Configuration file not found."
-            ),
+            Error::NotFound => write!(f, "Configuration file not found."),
         }
     }
 }
