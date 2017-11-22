@@ -8,6 +8,7 @@ authors = ["Matthew Klein <mklein994@gmail.com>"]
 
 [dependencies]
 chrono = "0.4.0"
+clap = { version = "2.27.1", features = ["wrap_help"] }
 dotenv = "0"
 log = "0.3"
 pretty_env_logger = "0.1"
