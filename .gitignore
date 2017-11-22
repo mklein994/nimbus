@@ -2,5 +2,8 @@
 /weather_icons/target/
 **/*.rs.bk
 
+# Custom overrides used in development
+/.cargo
+
 # ignore sensitive environment variables, such as private API keys
 .env
