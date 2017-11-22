@@ -5,6 +5,7 @@ description = "Cli tool to get the weather forecast"
 documentation = "https://docs.rs/nimbus"
 license = "MIT"
 authors = ["Matthew Klein <mklein994@gmail.com>"]
+build = "build.rs"
 
 [dependencies]
 chrono = "0.4.0"
@@ -30,6 +31,9 @@ git = "https://github.com/zeyla/darksky.rs"
 
 [dependencies.weather_icons]
 path = "weather_icons"
+
+[build-dependencies]
+clap = "2.27.1"
 
 [features]
 default = []
