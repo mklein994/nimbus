@@ -18,14 +18,19 @@ pub enum Error {
     Io(io::Error),
     Xdg(xdg::BaseDirectoriesError),
     Toml(toml::de::Error),
+    NotFound,
 }
 
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
-            Error::Io(ref err) => write!(f, "IO error: {}", err),
-            Error::Xdg(ref err) => write!(f, "Xdg error: {}", err),
-            Error::Toml(ref err) => write!(f, "Toml error: {}", err),
+            Error::Io(ref err) => err.fmt(f),
+            Error::Xdg(ref err) => err.fmt(f),
+            Error::Toml(ref err) => err.fmt(f),
+            Error::NotFound => write!(
+                f,
+                "Configuration file not found."
+            ),
         }
     }
 }
@@ -36,6 +41,7 @@ impl error::Error for Error {
             Error::Io(ref err) => err.description(),
             Error::Xdg(ref err) => err.description(),
             Error::Toml(ref err) => err.description(),
+            Error::NotFound => "not found",
         }
     }
 
@@ -44,6 +50,7 @@ impl error::Error for Error {
             Error::Io(ref err) => Some(err),
             Error::Xdg(ref err) => Some(err),
             Error::Toml(ref err) => Some(err),
+            Error::NotFound => None,
         }
     }
 }
@@ -84,11 +91,7 @@ pub struct Coordinates {
 
 impl Config {
     pub fn load() -> Result<Self> {
-        let config = match config_path() {
-            Some(c) => c,
-            // TODO: set some defaults instead of panicking
-            None => panic!("Configuration not found"),
-        };
+        let config = config_path()?;
 
         info!("{:?}", config.display());
 
@@ -107,8 +110,9 @@ impl Config {
     }
 }
 
-fn config_path() -> Option<PathBuf> {
+fn config_path() -> Result<PathBuf> {
     xdg::BaseDirectories::with_prefix(env!("CARGO_PKG_NAME"))
         .expect("Error finding xdg base directories")
         .find_config_file(Path::new("config.toml"))
+        .ok_or(Error::NotFound)
 }
