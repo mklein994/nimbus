@@ -95,24 +95,15 @@ impl Config {
 
         info!("{:?}", config.display());
 
-        let mut f = File::open(config).map_err(Error::Io)?; //.expect("config not found");
-        info!("{:?}", f);
-
         let mut contents = String::new();
-        f.read_to_string(&mut contents)?;
+        File::open(config).and_then(|mut f| f.read_to_string(&mut contents))?;
 
-        debug!(
-            "{}",
-            toml::to_string_pretty(&contents).expect("Failed to prettify config")
-        );
-
-        Ok(toml::from_str(&contents).expect("Failed to parse config"))
+        Ok(toml::from_str(&contents)?)
     }
 }
 
 fn config_path() -> Result<PathBuf> {
-    xdg::BaseDirectories::with_prefix(env!("CARGO_PKG_NAME"))
-        .expect("Error finding xdg base directories")
+    xdg::BaseDirectories::with_prefix(env!("CARGO_PKG_NAME"))?
         .find_config_file(Path::new("config.toml"))
         .ok_or(Error::NotFound)
 }
