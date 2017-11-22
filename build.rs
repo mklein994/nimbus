@@ -15,5 +15,8 @@ fn main() {
     println!("{:?}", outdir);
 
     let mut app = build_cli();
-    app.gen_completions(crate_name!(), Shell::Bash, &outdir)
+    app.gen_completions(crate_name!(), Shell::Bash, &outdir);
+    app.gen_completions(crate_name!(), Shell::Fish, &outdir);
+    app.gen_completions(crate_name!(), Shell::Zsh, &outdir);
+    app.gen_completions(crate_name!(), Shell::PowerShell, &outdir);
 }
