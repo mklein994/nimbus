@@ -5,7 +5,7 @@ extern crate clap;
 
 use clap::Shell;
 
-include!("src/args.rs");
+include!("src/config/args.rs");
 
 fn main() {
     let outdir = match ::std::env::var_os("OUT_DIR") {

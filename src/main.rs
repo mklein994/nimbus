@@ -14,9 +14,9 @@ extern crate serde_derive;
 extern crate toml;
 
 use config::Config;
+use config::args;
 
 mod config;
-mod args;
 
 fn main() {
     if let Err(e) = run() {

@@ -11,6 +11,8 @@ use std::io;
 use std::io::prelude::*;
 use std::path::{Path, PathBuf};
 
+pub mod args;
+
 type Result<T> = ::std::result::Result<T, Error>;
 
 #[derive(Debug)]
