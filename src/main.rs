@@ -7,11 +7,12 @@ extern crate darksky;
 extern crate dotenv;
 #[macro_use]
 extern crate log;
-extern crate nimbus;
 extern crate pretty_env_logger;
 #[macro_use]
 extern crate serde_derive;
 extern crate toml;
+
+extern crate nimbus;
 
 use config::Config;
 use config::args;
