@@ -4,12 +4,12 @@
 
 use clap::{App, Arg};
 
-const LOCATION_HELP: &'static str = "\
+const LOCATION_HELP: &str = "\
 Latitude and longitude (in decimal degrees), separated by a colon.
 Latitude: Positive is north, negative is south.
 Longitude: Positive is east, negative is west.";
 
-const UNITS_HELP: &'static str = "\
+const UNITS_HELP: &str = "\
 \u{2218} auto: automatically select units based on geographic location
 
 \u{2218} ca: same as si, except that wind speed and wind gust are in kilometers per hour
