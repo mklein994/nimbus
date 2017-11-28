@@ -3,12 +3,19 @@
 #![cfg_attr(feature = "clippy", warn(clippy_pedantic))]
 #![cfg_attr(feature = "clippy", allow(missing_docs_in_private_items))]
 
+#[macro_use]
+extern crate clap;
 extern crate darksky;
 #[macro_use]
 extern crate log;
+#[macro_use]
+extern crate serde_derive;
 extern crate serde_json;
 extern crate weather_icons;
 
+mod config;
+
+use config::{args, Config};
 use darksky::models::{Datablock, Datapoint};
 use darksky::models::Icon as DarkskyIcon;
 use std::error::Error;
@@ -86,7 +93,22 @@ impl From<Datablock> for Daily {
     }
 }
 
-fn get_weather() -> Result<darksky::models::Forecast, Box<Error>> {
+pub fn run() -> Result<(), Box<::std::error::Error>> {
+    let m = args::build_cli().get_matches();
+    info!("{:#?}", m);
+
+    info!("Retrieving settings\u{2026}");
+    let config: Config = Config::load()?;
+    info!("{:#?}", config);
+
+    let weather = get_weather(config);
+
+    info!("{}", weather.unwrap().currently.unwrap().summary.unwrap());
+
+    Ok(())
+}
+
+fn get_weather(config: Config) -> Result<darksky::models::Forecast, Box<Error>> {
     // TODO: Actually get the weather from the Internet.
     debug!("CARGO_MANIFEST_DIR: {}", env!("CARGO_MANIFEST_DIR"));
     let mut f =
