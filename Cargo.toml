@@ -13,6 +13,7 @@ clap = { version = "2.27.1", features = ["wrap_help"] }
 clippy = { version = "*", optional = true }
 dotenv = "0"
 log = "0.3"
+mockito = "0.9.0"
 pretty_env_logger = "0.1"
 reqwest = "0.8"
 serde = "1.0"
