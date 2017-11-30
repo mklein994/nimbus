@@ -8,6 +8,7 @@ extern crate clap;
 extern crate darksky;
 #[macro_use]
 extern crate log;
+extern crate reqwest;
 #[macro_use]
 extern crate serde_derive;
 extern crate serde_json;
@@ -16,14 +17,79 @@ extern crate weather_icons;
 mod config;
 
 use config::{args, Config};
+use darksky::DarkskyReqwestRequester;
 use darksky::models::{Datablock, Datapoint};
 use darksky::models::Icon as DarkskyIcon;
-use std::error::Error;
+use reqwest::Client;
+use std::error;
 use std::fmt;
-use std::fs::File;
-use std::io::prelude::*;
-use std::path::Path;
+use std::io;
 use weather_icons::Icon;
+
+type Result<T> = std::result::Result<T, Error>;
+
+#[derive(Debug)]
+pub enum Error {
+    Io(io::Error),
+    Darksky(darksky::Error),
+    Config(config::Error),
+    Json(serde_json::Error),
+}
+
+impl fmt::Display for Error {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match *self {
+            Error::Io(ref err) => err.fmt(f),
+            Error::Darksky(ref err) => err.fmt(f),
+            Error::Config(ref err) => err.fmt(f),
+            Error::Json(ref err) => err.fmt(f),
+        }
+    }
+}
+
+impl error::Error for Error {
+    fn description(&self) -> &str {
+        match *self {
+            Error::Io(ref err) => err.description(),
+            Error::Darksky(ref err) => err.description(),
+            Error::Config(ref err) => err.description(),
+            Error::Json(ref err) => err.description(),
+        }
+    }
+
+    fn cause(&self) -> Option<&error::Error> {
+        match *self {
+            Error::Io(ref err) => Some(err),
+            Error::Darksky(ref err) => Some(err),
+            Error::Config(ref err) => Some(err),
+            Error::Json(ref err) => Some(err),
+        }
+    }
+}
+
+impl From<io::Error> for Error {
+    fn from(err: io::Error) -> Self {
+        Error::Io(err)
+    }
+}
+
+impl From<darksky::Error> for Error {
+    fn from(err: darksky::Error) -> Self {
+        Error::Darksky(err)
+    }
+}
+
+impl From<config::Error> for Error {
+    fn from(err: config::Error) -> Self {
+        Error::Config(err)
+    }
+}
+
+impl From<serde_json::Error> for Error {
+    fn from(err: serde_json::Error) -> Self {
+        Error::Json(err)
+    }
+}
 
 #[derive(Debug)]
 struct Currently {
@@ -93,33 +159,16 @@ impl From<Datablock> for Daily {
     }
 }
 
-pub fn run() -> Result<(), Box<::std::error::Error>> {
-    let m = args::build_cli().get_matches();
-    info!("{:#?}", m);
+fn get_weather(config: Config) -> Result<darksky::models::Forecast> {
+    let client = Client::new();
 
-    info!("Retrieving settings\u{2026}");
-    let config: Config = Config::load()?;
-    info!("{:#?}", config);
-
-    let weather = get_weather(config);
-
-    info!("{}", weather.unwrap().currently.unwrap().summary.unwrap());
-
-    Ok(())
-}
-
-fn get_weather(config: Config) -> Result<darksky::models::Forecast, Box<Error>> {
-    // TODO: Actually get the weather from the Internet.
-    debug!("CARGO_MANIFEST_DIR: {}", env!("CARGO_MANIFEST_DIR"));
-    let mut f =
-        File::open(Path::new(env!("CARGO_MANIFEST_DIR")).join("tests/data/forecast_2.json"))?;
-
-    let mut contents = String::new();
-    f.read_to_string(&mut contents)?;
-
-    let weather_json: darksky::models::Forecast = serde_json::from_str(&contents)?;
-
-    Ok(weather_json)
+    client
+        .get_forecast(
+            &config.token,
+            config.coordinates.latitude,
+            config.coordinates.longitude,
+        )
+        .map_err(Error::Darksky)
 }
 
 fn get_icon(icon: DarkskyIcon) -> Icon {
@@ -138,4 +187,19 @@ fn get_icon(icon: DarkskyIcon) -> Icon {
         DarkskyIcon::Tornado => Icon::DarkskyTornado,
         DarkskyIcon::Wind => Icon::DarkskyWind,
     }
+}
+
+pub fn run() -> Result<()> {
+    let m = args::build_cli().get_matches();
+    info!("{:#?}", m);
+
+    info!("Retrieving settings\u{2026}");
+    let config: Config = Config::load()?;
+    info!("{:#?}", config);
+
+    let weather = get_weather(config);
+
+    info!("{}", weather.unwrap().currently.unwrap().summary.unwrap());
+
+    Ok(())
 }
