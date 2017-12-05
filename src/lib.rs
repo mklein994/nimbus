@@ -24,6 +24,7 @@ use reqwest::Client;
 use std::error;
 use std::fmt;
 use std::io;
+use std::io::prelude::*;
 use weather_icons::Icon;
 
 type Result<T> = std::result::Result<T, Error>;
@@ -160,15 +161,22 @@ impl From<Datablock> for Daily {
 }
 
 fn get_weather(config: Config) -> Result<darksky::models::Forecast> {
-    let client = Client::new();
+    if let Some(f) = config.local {
+        let mut forecast = std::fs::File::open(f)?;
+        let mut contents = String::new();
+        forecast.read_to_string(&mut contents)?;
+        serde_json::from_str(&contents).map_err(Error::Json)
+    } else {
+        let client = Client::new();
 
-    client
-        .get_forecast(
-            &config.token,
-            config.coordinates.latitude,
-            config.coordinates.longitude,
-        )
-        .map_err(Error::Darksky)
+        client
+            .get_forecast(
+                &config.token,
+                config.coordinates.latitude,
+                config.coordinates.longitude,
+            )
+            .map_err(Error::Darksky)
+    }
 }
 
 fn get_icon(icon: DarkskyIcon) -> Icon {

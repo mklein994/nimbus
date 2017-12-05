@@ -80,6 +80,7 @@ pub struct Config {
     pub language: Option<String>,
     /// darksky::Unit
     pub unit: Option<String>,
+    pub local: Option<String>,
 }
 
 #[derive(Debug, Deserialize)]
