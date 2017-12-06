@@ -25,6 +25,7 @@ xdg = "2.1.0"
 
 [dependencies.darksky]
 branch = "master"
+default-features = false
 features = ["reqwest"]
 git = "https://github.com/zeyla/darksky.rs"
 
