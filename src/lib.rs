@@ -162,11 +162,13 @@ impl From<Datablock> for Daily {
 
 fn get_weather(config: Config) -> Result<darksky::models::Forecast> {
     if let Some(f) = config.local {
+        info!("Using local file");
         let mut forecast = std::fs::File::open(f)?;
         let mut contents = String::new();
         forecast.read_to_string(&mut contents)?;
         serde_json::from_str(&contents).map_err(Error::Json)
     } else {
+        info!("Downloading from https://api.darksky.net");
         let client = Client::new();
 
         client
