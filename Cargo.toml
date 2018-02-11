@@ -1,9 +1,16 @@
 [package]
 name = "nimbus"
 version = "0.1.0"
+authors = ["Matthew Klein <mklein994@gmail.com>"]
 description = "Cli tool to get the weather forecast"
 documentation = "https://docs.rs/nimbus"
 license = "MIT"
-authors = ["Matthew Klein <mklein994@gmail.com>"]
+repository = "https://github.com/mklein994/nimbus"
 
 [dependencies]
+
+[badges.maintenance]
+status = "experimental"
+
+[badges.travis-ci]
+repository = "mklein994/nimbus"
